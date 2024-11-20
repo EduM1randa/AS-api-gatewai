@@ -4,7 +4,7 @@ export class CeleryService {
   private client;
 
   constructor() {
-    
+    //PARAR A UN ENV
     this.client = celery.createClient(
       'amqp://otlvzjsh:9ca3dasMysqshBXsWwvaB0Bf0GZSWexD@jackal.rmq.cloudamqp.com/otlvzjsh', 
       'redis://default:TuRUNrLhvCI02ezrVeVWHx3gG7BRIV1k@redis-10551.c308.sa-east-1-1.ec2.redns.redis-cloud.com:10551/0'
@@ -35,5 +35,16 @@ export class CeleryService {
       throw new Error('Failed to get unread notifications');
     }
   }
-  
+
+  async generateReport(){
+    try {
+      const taks = this.client.createTask('notifications.tasks.generate_report');
+      const result = await taks.applyAsync([]);
+      return await result.get();
+    } catch (error) {
+      console.error('Error while generating report:', error);
+      throw new Error('Failed to generate report');
+    }
+  }
+
 }
