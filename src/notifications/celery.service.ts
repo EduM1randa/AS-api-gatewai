@@ -46,5 +46,4 @@ export class CeleryService {
       throw new Error('Failed to generate report');
     }
   }
-
 }
