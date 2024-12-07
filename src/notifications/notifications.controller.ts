@@ -23,4 +23,14 @@ export class NotificationsController {
   async getUnreadNotifications(@Param('userId') userId: string) {
     return await this.celeryService.getUnreadNotifications(userId);
   }
+
+  @Get('generate-report')
+  async generateReport() {
+    return await this.celeryService.generateReport();
+  }
+
+  @Get('send-dialy-summary/:userId')
+  async sendDialySummary(@Param('userId') userId: string) {
+    return await this.celeryService.sendDialySummary(userId);
+  }
 }
