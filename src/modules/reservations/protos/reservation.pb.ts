@@ -10,7 +10,12 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "reservation";
 
-export interface Reservation {
+export interface Message {
+  body: string;
+}
+
+/** Mensaje para crear una reserva */
+export interface CreateReservationRequest {
   id: string;
   userId: string;
   tableId: string;
@@ -19,32 +24,131 @@ export interface Reservation {
   status: string;
 }
 
+/** Mensaje para obtener una reserva por ID */
+export interface GetReservationByIDRequest {
+  id: string;
+}
+
+/** Mensaje para obtener reservas por usuario */
+export interface GetReservationsByUserIDRequest {
+  userId: string;
+}
+
+/** Mensaje para obtener reservas por fecha */
+export interface GetReservationsByDateRequest {
+  reservationDate: string;
+}
+
+/** Mensaje para actualizar una reserva */
+export interface UpdateReservationRequest {
+  id: string;
+  tableId: string;
+  reservationDate: string;
+  guestCount: number;
+  status: string;
+}
+
+/** Mensaje para eliminar una reserva */
+export interface DeleteReservationRequest {
+  id: string;
+}
+
+/** Mensaje de respuesta genérica */
 export interface Response {
   message: string;
   success: boolean;
 }
 
-export interface Message {
-  body: string;
+/** Mensaje de reserva */
+export interface Reservation {
+  id: string;
+  userId: string;
+  tableId: string;
+  reservationDate: string;
+  guestCount: number;
+  status: string;
+  createAt: string;
+  updateAt: string;
+}
+
+/** Mensaje para una lista de reservas */
+export interface Reservations {
+  reservations: Reservation[];
 }
 
 export const RESERVATION_PACKAGE_NAME = "reservation";
 
 export interface ReservationServiceClient {
-  createReservation(request: Reservation): Observable<Response>;
+  /** RPC para crear una reserva */
+
+  createReservation(request: CreateReservationRequest): Observable<Response>;
+
+  /** RPC para obtener una reserva por ID */
+
+  getReservationById(request: GetReservationByIDRequest): Observable<Reservation>;
+
+  /** RPC para obtener reservas por usuario */
+
+  getReservationsByUserId(request: GetReservationsByUserIDRequest): Observable<Reservations>;
+
+  /** RPC para obtener reservas por fecha */
+
+  getReservationsByDate(request: GetReservationsByDateRequest): Observable<Reservations>;
+
+  /** RPC para actualizar una reserva */
+
+  updateReservation(request: UpdateReservationRequest): Observable<Response>;
+
+  /** RPC para eliminar una reserva */
+
+  deleteReservation(request: DeleteReservationRequest): Observable<Response>;
 
   sayHello(request: Message): Observable<Message>;
 }
 
 export interface ReservationServiceController {
-  createReservation(request: Reservation): Promise<Response> | Observable<Response> | Response;
+  /** RPC para crear una reserva */
+
+  createReservation(request: CreateReservationRequest): Promise<Response> | Observable<Response> | Response;
+
+  /** RPC para obtener una reserva por ID */
+
+  getReservationById(request: GetReservationByIDRequest): Promise<Reservation> | Observable<Reservation> | Reservation;
+
+  /** RPC para obtener reservas por usuario */
+
+  getReservationsByUserId(
+    request: GetReservationsByUserIDRequest,
+  ): Promise<Reservations> | Observable<Reservations> | Reservations;
+
+  /** RPC para obtener reservas por fecha */
+
+  getReservationsByDate(
+    request: GetReservationsByDateRequest,
+  ): Promise<Reservations> | Observable<Reservations> | Reservations;
+
+  /** RPC para actualizar una reserva */
+
+  updateReservation(request: UpdateReservationRequest): Promise<Response> | Observable<Response> | Response;
+
+  /** RPC para eliminar una reserva */
+
+  deleteReservation(request: DeleteReservationRequest): Promise<Response> | Observable<Response> | Response;
 
   sayHello(request: Message): Promise<Message> | Observable<Message> | Message;
 }
 
 export function ReservationServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createReservation", "sayHello"];
+    const grpcMethods: string[] = [
+      "createReservation",
+      "getReservationById",
+      "getReservationsByUserId",
+      "getReservationsByDate",
+      "updateReservation",
+      "deleteReservation",
+      "sayHello",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ReservationService", method)(constructor.prototype[method], method, descriptor);

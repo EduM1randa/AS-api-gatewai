@@ -1,9 +1,18 @@
 import { Module } from '@nestjs/common';
-import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
+import { clientProxyReservations } from 'src/common/proxy/client-proxy';
+import { ClientGrpcProxy } from '@nestjs/microservices';
 
 @Module({
   controllers: [ReservationsController],
-  providers: [ReservationsService],
+  providers: [
+    {
+      provide: 'ReservationsServiceClient',
+      useFactory: (): ClientGrpcProxy => {
+        return clientProxyReservations();
+      },
+    }
+  ],
+  exports: [],
 })
 export class ReservationsModule {}

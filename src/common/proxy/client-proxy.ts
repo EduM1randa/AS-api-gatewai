@@ -13,9 +13,9 @@ export const clientProxyReservations = (): ClientGrpcProxy => {
   return ClientProxyFactory.create({
     transport: Transport.GRPC,
     options: {
-      url: ,
+      url: 'localhost:9000',
       package: RESERVATION_PACKAGE_NAME,
-      protoPath: ,
+      protoPath: 'protos/protos/reservation.proto',
     },
   })
 }
