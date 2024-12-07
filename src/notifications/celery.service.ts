@@ -46,4 +46,15 @@ export class CeleryService {
       throw new Error('Failed to generate report');
     }
   }
+
+async sendDialySummary(userId: string) {
+  try {
+    const taks = this.client.createTask('notifications.tasks.send_dialy_summary');
+    const result = await taks.applyAsync([userId]);
+    return await result.get();
+  } catch (error) {
+    console.error('Error while sending dialy summary:', error);
+    throw new Error('Failed to send dialy summary');
+  }
+}
 }
