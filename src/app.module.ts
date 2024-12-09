@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common';
-import {NotificationsModule} from './notifications/notifications.module';
+import { ReservationsModule } from './modules/reservations/reservations.module';
+import { UsersModule } from './modules/users/users.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+
 @Module({
-  imports: [NotificationsModule],
+  imports: [
+    ReservationsModule, 
+    UsersModule, 
+    NotificationsModule
+  ],
   controllers: [],
   providers: [],
 })
