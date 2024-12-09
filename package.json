@@ -20,10 +20,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "if exist protos (cd protos && git pull && cd ..) else (git clone https://github.com/EduM1randa/protos.git protos)",
-    "proto:reservations": "protoc --plugin=protoc-gen-ts=node_modules\\.bin\\protoc-gen-ts.cmd --ts_out=src/modules/reservations ./protos/protos/reservation.proto",
+    "proto:reservations": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./src/modules/reservations --ts_proto_opt=nestJs=true ./protos/protos/reservation.proto",
     "proto:all": "npm run proto:install && npm run proto:reservations"
   },
   "dependencies": {
+    "@bufbuild/protobuf": "^2.2.2",
     "@grpc/grpc-js": "^1.7.0",
     "@nestjs/common": "9.0.0",
     "@nestjs/core": "9.0.0",
@@ -38,6 +39,7 @@
     "rxjs": "7.2.0"
   },
   "devDependencies": {
+    "@bufbuild/protoc-gen-es": "^2.2.2",
     "@nestjs/cli": "9.0.0",
     "@nestjs/testing": "9.0.0",
     "@types/google-protobuf": "^3.15.12",
@@ -51,6 +53,7 @@
     "jest": "28.1.3",
     "prettier": "2.3.2",
     "protoc": "^1.1.3",
+    "protoc-gen-nestjs": "^0.2.0",
     "supertest": "6.1.3",
     "ts-jest": "28.0.8",
     "ts-node": "10.0.0",

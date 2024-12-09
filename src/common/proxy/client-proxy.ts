@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-import { RESERVATION_PACKAGE_NAME } from '../../modules/reservations/protos/reservation.pb';
+import { RESERVATION_PACKAGE_NAME } from '../../modules/reservations/protos/protos/reservation';
 
 export const clientProxyReservations = (): ClientGrpcProxy => {
   return ClientProxyFactory.create({
