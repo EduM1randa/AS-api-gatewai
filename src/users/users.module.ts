@@ -19,7 +19,6 @@ import { UsersController } from './users.controller';
             queueOptions: {
               durable: true,
             },
-            replyQueue: configService.get<string>('RABBITMQ_RESPONSES_QUEUE'),
           },
         }),
       },
