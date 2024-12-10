@@ -1,5 +1,6 @@
-import { Body, Controller, Post, BadRequestException } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Body, Controller, Post, BadRequestException, Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 type RegisterUserDto = {
   Name: string;
@@ -10,17 +11,13 @@ type RegisterUserDto = {
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(@Inject('USERS_SERVICE') private readonly client: ClientProxy) {}
 
   @Post('register')
   async register(@Body() userData: RegisterUserDto) {
     try {
-      console.log('Received registration request:', userData);
-      const confirmation = await this.usersService.registerUser(userData);
-      console.log('Registration confirmation:', confirmation);
-      return confirmation;
+      return await lastValueFrom(this.client.send({ cmd: 'register_user' }, userData));
     } catch (error) {
-      console.error('Error during registration:', error);
       throw new BadRequestException('Failed to register user.');
     }
   }

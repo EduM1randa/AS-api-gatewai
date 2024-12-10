@@ -2,11 +2,10 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), // Asegúrate de que ConfigModule esté importado
+    ConfigModule.forRoot(),
     ClientsModule.registerAsync([
       {
         name: 'USERS_SERVICE',
@@ -27,6 +26,6 @@ import { UsersService } from './users.service';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [],
 })
 export class UsersModule {}
