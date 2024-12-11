@@ -1,34 +1,104 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Body, Controller, Post } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { LoginResponse, ServiceResponse, UserForgotPassword, UserLogin, UserRefreshToken, UserRegister, UserResetPassword } from './users.types';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  private readonly microserviceUrl = this.configService.get<string>('MICROSERVICE_URL');
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) { }
+
+  @Post('register')
+  async register(@Body() payload: UserRegister) {
+    try {
+      const axiosResponse = await this.httpService.post(`${this.microserviceUrl}/register`, payload).toPromise();
+      const response: ServiceResponse<string> = {
+        data: axiosResponse?.data.data,
+        success: true,
+      };
+      return response;
+    } catch (error) {
+      const response: ServiceResponse<string> = {
+        error: (error as any).message,
+        success: false,
+      };
+      return response;
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Post('login')
+  async login(@Body() payload: UserLogin) {
+    try {
+      const axiosResponse = await this.httpService.post(`${this.microserviceUrl}/login`, payload).toPromise();
+      const response: ServiceResponse<LoginResponse> = {
+        data: axiosResponse?.data.data,
+        success: true,
+      };
+      return response;
+    } catch (error) {
+      const response: ServiceResponse<LoginResponse> = {
+        error: (error as any).message,
+        success: false,
+      };
+      return response;
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Post('refresh-token')
+  async refreshToken(@Body() payload: UserRefreshToken) {
+    try {
+      const axiosResponse = await this.httpService.post(`${this.microserviceUrl}/refresh-token`, payload).toPromise();
+      const response: ServiceResponse<LoginResponse> = {
+        data: axiosResponse?.data.data,
+        success: true,
+      };
+      return response;
+    } catch (error) {
+      const response: ServiceResponse<LoginResponse> = {
+        error: (error as any).message,
+        success: false,
+      };
+      return response;
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Post('forgot-password')
+  async forgotPassword(@Body() payload: UserForgotPassword) {
+    try {
+      const axiosResponse = await this.httpService.post(`${this.microserviceUrl}/forgot-password`, payload).toPromise();
+      const response: ServiceResponse<string> = {
+        data: axiosResponse?.data.data,
+        success: true,
+      };
+      return response;
+    } catch (error) {
+      const response: ServiceResponse<string> = {
+        error: (error as any).message,
+        success: false,
+      };
+      return response;
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Post('reset-password')
+  async resetPassword(@Body() payload: UserResetPassword) {
+    try {
+      const axiosResponse = await this.httpService.post(`${this.microserviceUrl}/reset-password`, payload).toPromise();
+      const response: ServiceResponse<string> = {
+        data: axiosResponse?.data.data,
+        success: true,
+      };
+      return response;
+    } catch (error) {
+      const response: ServiceResponse<string> = {
+        error: (error as any).message,
+        success: false,
+      };
+      return response;
+    }
   }
 }

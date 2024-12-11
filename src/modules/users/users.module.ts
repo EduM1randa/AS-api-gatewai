@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersController } from './users.controller';
 
 @Module({
+  imports: [
+    ConfigModule.forRoot(),
+    HttpModule,
+  ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [ConfigService],
 })
 export class UsersModule {}
