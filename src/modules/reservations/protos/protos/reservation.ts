@@ -18,6 +18,7 @@ export interface CreateReservationRequest {
   userId: string;
   tableId: string;
   reservationDate: string;
+  reservationTime: string;
   guestCount: number;
   status: string;
 }
@@ -38,6 +39,7 @@ export interface UpdateReservationRequest {
   id: string;
   tableId: string;
   reservationDate: string;
+  reservationTime: string;
   guestCount: number;
   status: string;
 }
@@ -56,6 +58,7 @@ export interface Reservation {
   userId: string;
   tableId: string;
   reservationDate: string;
+  reservationTime: string;
   guestCount: number;
   status: string;
   createAt: string;
