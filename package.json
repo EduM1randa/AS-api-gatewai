@@ -21,7 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "if exist protos (cd protos && git pull && cd ..) else (git clone https://github.com/EduM1randa/protos.git protos)",
     "proto:reservations": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto.cmd --ts_proto_out=./src/modules/reservations --ts_proto_opt=nestJs=true ./protos/protos/reservation.proto",
-    "proto:all": "npm run proto:install && npm run proto:reservations"
+    "proto:all": "test -d protos && (cd protos && git pull) || git clone https://github.com/EduM1randa/protos.git protos"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.2",
@@ -32,6 +32,7 @@
     "@nestjs/microservices": "^9.0.11",
     "@nestjs/platform-express": "9.0.0",
     "celery-node": "^0.5.9",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "google-protobuf": "^3.21.4",
     "grpc-nest-api-gateway": "file:",

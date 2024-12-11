@@ -13,7 +13,7 @@ export const clientProxyReservations = (): ClientGrpcProxy => {
   return ClientProxyFactory.create({
     transport: Transport.GRPC,
     options: {
-      url: 'localhost:9000',
+      url: 'my-go-service:9000',
       package: RESERVATION_PACKAGE_NAME,
       protoPath: 'protos/protos/reservation.proto',
     },
