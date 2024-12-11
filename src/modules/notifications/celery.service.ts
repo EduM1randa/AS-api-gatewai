@@ -20,11 +20,11 @@ export class CeleryService {
       throw new Error('Failed to send notification');
     }
   }
-  async markAsRead(userId: string) {
+  async markAsRead(notificationId: string) {
     const task = this.client.createTask('notifications.tasks.mark_as_read');
-    const result = await task.applyAsync([userId]);
-    return result.get(); 
-  }
+    const result = await task.applyAsync([notificationId]);
+    return result.get();
+}
   async getUnreadNotifications(userId: string) {
     try {
       const task = this.client.createTask('notifications.tasks.unread'); 
@@ -49,7 +49,7 @@ export class CeleryService {
 
 async sendDialySummary(userId: string) {
   try {
-    const taks = this.client.createTask('notifications.tasks.send_dialy_summary');
+    const taks = this.client.createTask('notifications.tasks.send_daily_summary');
     const result = await taks.applyAsync([userId]);
     return await result.get();
   } catch (error) {

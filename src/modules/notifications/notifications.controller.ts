@@ -15,8 +15,8 @@ export class NotificationsController {
   }
 
   @Post('mark-as-read')
-  async markAsRead(@Body('userId') userId: string) {
-    return await this.celeryService.markAsRead(userId);
+  async markAsRead(@Body('IdNotificacion') notificationId: string) {
+    return await this.celeryService.markAsRead(notificationId);
   }
 
   @Get('unread/:userId')
